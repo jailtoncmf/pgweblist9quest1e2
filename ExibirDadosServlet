@@ -1,0 +1,35 @@
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/ExibirDadosServlet")
+public class ExibirDadosServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        String html = "<html><head><title>Dados do Usuário</title></head><body>";
+
+        // Recupere os cookies
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                String name = cookie.getName();
+                String value = cookie.getValue();
+                if (name.equals("cor_favorita")) {
+                    html += "<h2 style=\"color: " + value + "\">" + name + ": " + value + "</h2>";
+                } else {
+                    html += "<h2>" + name + ": " + value + "</h2>";
+
+                }
+            }
+        }
+
+        html += "</body></html>";
+        response.getWriter().write(html);
+    }
+}
